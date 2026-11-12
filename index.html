@@ -286,6 +286,15 @@ form.f{background:var(--card);border:1px solid var(--line-2);border-radius:16px;
 .gchip input:checked + span::before{border-color:var(--green);background:var(--green) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230B0F12' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/11px no-repeat}
 .gchip input:focus-visible + span{box-shadow:0 0 0 3px rgba(0,222,160,.25)}
 .chips[aria-invalid="true"] .gchip span{border-color:var(--pink)}
+.tel{border:0;margin:0;padding:0;min-width:0}
+.tel legend{padding:0;margin-bottom:7px;font:600 12px/1 var(--ff-h);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.tel-row{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr) minmax(0,1.2fr);gap:10px}
+.fld select[aria-invalid="true"],.fld input[aria-invalid="true"]{border-color:var(--pink)}
+.tel-hint{margin:8px 0 0;font:400 12px/1.45 var(--ff-h);color:var(--dim)}
+.tel-hint b{color:var(--text);font-weight:600}
+.tel-hint.ok b{color:var(--green)}
+.otro{margin-top:12px;flex:1 1 100%;width:100%}
+.fld[hidden]{display:none}
 .hp{position:absolute!important;left:-9999px;width:1px;height:1px;overflow:hidden}
 .f .btn[aria-busy="true"]{opacity:.7;cursor:progress}
 .f-msg a{color:var(--green)}
@@ -632,6 +641,7 @@ header.nav.scrolled .brandsq{align-self:center;margin-top:0;width:74px;height:63
   .menu a.m-only{display:block!important;margin-top:8px;background:var(--green);color:var(--bg);text-align:center;font-weight:700}
 }
 @media (max-width:640px){
+  .tel-row{grid-template-columns:minmax(0,.75fr) minmax(0,1.25fr)} .tel-row select{grid-column:1/-1}
   .ide-tab{padding:13px 16px;font-size:12.5px} .ide-panel{padding:22px 22px 18px;min-height:176px}
   .cl{grid-template-columns:30px 1fr;font-size:15px} .ide-status{font-size:11.5px;padding:9px 12px 9px 16px} .ide-status .cp{font-size:11px;padding:6px 9px}
   .pr-per{font-size:clamp(15px,4.3vw,17px)} .price .price-r{padding-left:18px;padding-right:18px}
@@ -905,7 +915,7 @@ header.nav.scrolled .brandsq{align-self:center;margin-top:0;width:74px;height:63
         <span class="pr-lab">Inversión total</span>
         <div class="pr-val">USD 999</div>
         <ul class="pr-per"><li><span><b>USD 57</b> por semana</span></li><li><span><b>USD 11,50</b> por día de práctica</span></li></ul>
-        <a class="btn btn-g" data-origen="inscripcion" href="#contacto">Quiero inscribirme <span class="arr">→</span></a>
+        <a class="btn btn-g" data-origen="Quiero inscribirme" href="#contacto">Quiero inscribirme <span class="arr">→</span></a>
         <p class="alt">¿Dudas sobre formas de pago? <a class="btn btn-p btn-xs" data-mail="pago" href="#contacto">Escribinos <span class="arr">→</span></a></p>
       </div>
     </div>
@@ -987,20 +997,57 @@ header.nav.scrolled .brandsq{align-self:center;margin-top:0;width:74px;height:63
     <form class="f rv d2" id="form" novalidate>
       <div class="f-body">
         <div class="row2">
-          <div class="fld"><label for="f-name">Nombre</label><input id="f-name" name="nombre" autocomplete="name" maxlength="80" required></div>
+          <div class="fld"><label for="f-name">Nombre completo</label><input id="f-name" name="nombre" autocomplete="name" maxlength="80" placeholder="Nombre y apellido" required></div>
           <div class="fld"><label for="f-mail">Email</label><input id="f-mail" name="email" type="email" autocomplete="email" maxlength="120" required></div>
         </div>
-        <div class="row2">
-          <div class="fld"><label for="f-tel">Celular</label><input id="f-tel" name="celular" type="tel" inputmode="tel" autocomplete="tel" maxlength="30" placeholder="+54 9 351 123-4567" required></div>
-          <div class="fld"><label for="f-role">Rol o stack</label><input id="f-role" name="rolStack" maxlength="80" placeholder="Ej.: Backend · Java" required></div>
-        </div>
+        <fieldset class="fld tel" id="f-telset">
+          <legend>Celular</legend>
+          <div class="tel-row">
+            <select id="f-pais" name="pais" aria-label="País (código)" autocomplete="tel-country-code">
+                <option value="AR" data-dial="54" selected>Argentina (+54)</option>
+                <option value="BO" data-dial="591">Bolivia (+591)</option>
+                <option value="BR" data-dial="55">Brasil (+55)</option>
+                <option value="CL" data-dial="56">Chile (+56)</option>
+                <option value="CO" data-dial="57">Colombia (+57)</option>
+                <option value="CR" data-dial="506">Costa Rica (+506)</option>
+                <option value="CU" data-dial="53">Cuba (+53)</option>
+                <option value="EC" data-dial="593">Ecuador (+593)</option>
+                <option value="SV" data-dial="503">El Salvador (+503)</option>
+                <option value="ES" data-dial="34">España (+34)</option>
+                <option value="US" data-dial="1">Estados Unidos (+1)</option>
+                <option value="GT" data-dial="502">Guatemala (+502)</option>
+                <option value="HN" data-dial="504">Honduras (+504)</option>
+                <option value="MX" data-dial="52">México (+52)</option>
+                <option value="NI" data-dial="505">Nicaragua (+505)</option>
+                <option value="PA" data-dial="507">Panamá (+507)</option>
+                <option value="PY" data-dial="595">Paraguay (+595)</option>
+                <option value="PE" data-dial="51">Perú (+51)</option>
+                <option value="PR" data-dial="1">Puerto Rico (+1)</option>
+                <option value="DO" data-dial="1">República Dominicana (+1)</option>
+                <option value="UY" data-dial="598">Uruguay (+598)</option>
+                <option value="VE" data-dial="58">Venezuela (+58)</option>
+                <option value="CA" data-dial="1">Canadá (+1)</option>
+                <option value="DE" data-dial="49">Alemania (+49)</option>
+                <option value="FR" data-dial="33">Francia (+33)</option>
+                <option value="IT" data-dial="39">Italia (+39)</option>
+                <option value="PT" data-dial="351">Portugal (+351)</option>
+                <option value="GB" data-dial="44">Reino Unido (+44)</option>
+            </select>
+            <input id="f-area" name="area" type="tel" inputmode="numeric" autocomplete="tel-area-code" maxlength="6" placeholder="Área" aria-label="Código de área" aria-describedby="f-telhint">
+            <input id="f-num" name="numero" type="tel" inputmode="numeric" autocomplete="tel-local" maxlength="12" placeholder="Número" aria-label="Número" aria-describedby="f-telhint" required>
+          </div>
+          <p class="tel-hint" id="f-telhint">Código de área sin el 0 y número sin el 15. Ej.: <b>+54 2964-523248</b></p>
+        </fieldset>
+        <div class="fld"><label for="f-role">Rol o stack</label><input id="f-role" name="rolStack" maxlength="80" placeholder="Ej.: Backend · Java" required></div>
         <fieldset class="chips" id="f-goal">
           <legend>¿Para qué lo necesitás? <span>(podés elegir varias)</span></legend>
           <div class="chip-row">
             <label class="gchip"><input type="checkbox" name="objetivo" value="Entrevistas"><span>Entrevistas</span></label>
             <label class="gchip"><input type="checkbox" name="objetivo" value="Dailies"><span>Dailies</span></label>
             <label class="gchip"><input type="checkbox" name="objetivo" value="Reuniones"><span>Reuniones</span></label>
+            <label class="gchip"><input type="checkbox" name="objetivo" value="Otro" id="f-otro-chk"><span>Otro</span></label>
           </div>
+          <div class="fld otro" id="f-otro-box" hidden><input id="f-otro" name="otro" maxlength="80" placeholder="Contanos cuál. Ej.: presentaciones" aria-label="Otro objetivo"></div>
         </fieldset>
         <div class="hp" aria-hidden="true"><label for="f-web">No completar este campo</label><input id="f-web" name="website" tabindex="-1" autocomplete="off"></div>
         <button class="btn btn-g" type="submit" id="f-send">Enviar consulta <span class="arr">→</span></button>
@@ -1186,23 +1233,42 @@ days.forEach((d, i) => d.addEventListener('click', () => pick(i))); pick(0);
 /* formulario → Power Automate (o correo, si todavía no hay URL del flujo) */
 const form = $('#form'), out = $('#f-out'), send = $('#f-send'), goal = $('#f-goal'), done = $('#f-done');
 const WA = 'https://wa.me/5493516851849?text=' + encodeURIComponent('Hola, quiero info sobre English Sprint for Devs');
-let origen = 'directo', t0 = 0;
-document.addEventListener('click', e => { const a = e.target.closest('a[href="#contacto"]'); if (a) origen = a.dataset.origen || a.dataset.mail || a.textContent.replace(/[→↗]/g, '').trim().slice(0, 40) || 'directo'; });
+let origen = 'Formulario directo', t0 = 0;
+document.addEventListener('click', e => { const a = e.target.closest('a[href="#contacto"]'); if (a) origen = a.dataset.origen || a.dataset.mail || a.textContent.replace(/[→↗]/g, '').trim().slice(0, 40) || 'Formulario directo'; });
 form.addEventListener('focusin', () => { if (!t0) t0 = Date.now(); });
 if (!FORM_ENDPOINT) $('#f-note').textContent = 'Se abre tu programa de correo con el mensaje listo para enviar.';
 const say = (cls, html) => { out.className = 'f-msg ' + cls; out.innerHTML = html; };
 const bad = (el, msg) => { el.setAttribute('aria-invalid', 'true'); (el.matches('fieldset') ? el.querySelector('input') : el).focus(); say('err', msg); return false; };
 const busy = on => { send.disabled = on; send.setAttribute('aria-busy', String(on)); send.firstChild.textContent = on ? 'Enviando… ' : 'Enviar consulta '; };
-form.addEventListener('change', e => { if (e.target.name === 'objetivo') goal.removeAttribute('aria-invalid'); });
+form.addEventListener('change', e => { if (e.target.name === 'objetivo') goal.removeAttribute('aria-invalid');
+  if (e.target.id === 'f-otro-chk') { const box = $('#f-otro-box'); box.hidden = !e.target.checked; if (e.target.checked) $('#f-otro').focus(); } });
+/* celular: país + código de área + número -> "+54 2964-523248" */
+const tel = () => { const f = form.elements, opt = f.pais.selectedOptions[0], dial = opt.dataset.dial, iso = f.pais.value;
+  let area = f.area.value.replace(/\D/g, ''), num = f.numero.value.replace(/\D/g, '');
+  if (iso === 'AR') { area = area.replace(/^[09]+/, ''); if ((area + num).length === 12 && num.startsWith('15')) num = num.slice(2); }
+  const total = (area + num).length;
+  const err = iso === 'AR'
+    ? (area.length < 2 || area.length > 4 ? ['area', 'Completá el código de área, sin el 0 (ej.: 11, 351, 2964).'] : total !== 10 ? ['numero', 'Revisá el número: código de área + número suman 10 dígitos en Argentina (sin el 15).'] : null)
+    : (!num ? ['numero', 'Completá el número de celular.'] : total < 6 || total > 14 ? ['numero', 'Revisá el número de celular.'] : null);
+  return { valor: `+${dial} ${area ? area + '-' : ''}${num}`, pais: opt.textContent.replace(/\s*\(.*\)$/, ''), err };
+};
+const hint = $('#f-telhint'), HINT = hint.innerHTML;
+const showTel = () => { const t = tel(), f = form.elements; [f.pais, f.area, f.numero].forEach(x => x.removeAttribute('aria-invalid'));
+  if (f.numero.value.replace(/\D/g, '')) { hint.className = 'tel-hint' + (t.err ? '' : ' ok'); hint.innerHTML = `Se registra como: <b>${t.valor}</b>`; } else { hint.className = 'tel-hint'; hint.innerHTML = HINT; } };
+['f-pais', 'f-area', 'f-num'].forEach(id => document.getElementById(id).addEventListener(id === 'f-pais' ? 'change' : 'input', showTel));
+['f-area', 'f-num'].forEach(id => document.getElementById(id).addEventListener('input', e => { const v = e.target.value.replace(/[^\d]/g, ''); if (v !== e.target.value) e.target.value = v; }));
 form.addEventListener('submit', async e => { e.preventDefault(); const f = form.elements;
-  [f.nombre, f.email, f.celular, f.rolStack, goal].forEach(x => x.removeAttribute('aria-invalid'));
-  const data = { tipo: 'consulta', nombre: f.nombre.value.trim(), email: f.email.value.trim(), celular: f.celular.value.trim(), rolStack: f.rolStack.value.trim(),
-    objetivo: $$('input[name="objetivo"]:checked', form).map(x => x.value).join(', ') };
-  if (!data.nombre) return bad(f.nombre, 'Completá tu nombre.');
+  [f.nombre, f.email, f.pais, f.area, f.numero, f.rolStack, f.otro, goal].forEach(x => x.removeAttribute('aria-invalid'));
+  const t = tel(), otro = f.otro.value.trim().replace(/\s+/g, ' ');
+  const data = { tipo: 'consulta', nombre: f.nombre.value.trim().replace(/\s+/g, ' '), email: f.email.value.trim(), celular: t.valor, pais: t.pais, rolStack: f.rolStack.value.trim(),
+    objetivo: $$('input[name="objetivo"]:checked', form).map(x => x.value === 'Otro' ? `Otro: ${otro}` : x.value).join(', ') };
+  if (!data.nombre) return bad(f.nombre, 'Completá tu nombre completo.');
+  if (data.nombre.split(' ').length < 2) return bad(f.nombre, 'Escribí tu nombre y apellido.');
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return bad(f.email, 'Revisá el email.');
-  if (data.celular.replace(/\D/g, '').length < 8) return bad(f.celular, 'Revisá el número de celular (con código de área).');
+  if (t.err) return bad(f[t.err[0]], t.err[1]);
   if (!data.rolStack) return bad(f.rolStack, 'Contanos tu rol o stack.');
   if (!data.objetivo) return bad(goal, 'Elegí al menos un objetivo.');
+  if (f.objetivo && $('#f-otro-chk').checked && !otro) return bad(f.otro, 'Contanos para qué otra situación lo necesitás.');
   const payload = { ...data, origen, pagina: location.href.split('#')[0], website: f.website.value, ms: t0 ? Date.now() - t0 : 0 };
   if (!FORM_ENDPOINT) { /* respaldo: correo armado */
     const body = `Nombre: ${data.nombre}\nEmail: ${data.email}\nCelular: ${data.celular}\nRol o stack: ${data.rolStack}\nObjetivo: ${data.objetivo}`;
@@ -1220,7 +1286,7 @@ form.addEventListener('submit', async e => { e.preventDefault(); const f = form.
   } finally { clearTimeout(timer); busy(false); }
 });
 const finish = nombre => { $('#f-done-t').textContent = `¡Gracias, ${nombre.split(' ')[0]}!`; form.querySelector('.f-body').hidden = true; done.hidden = false; done.focus(); };
-$('#f-again').addEventListener('click', () => { form.reset(); t0 = 0; say('', ''); done.hidden = true; form.querySelector('.f-body').hidden = false; form.elements.nombre.focus(); });
+$('#f-again').addEventListener('click', () => { form.reset(); $('#f-otro-box').hidden = true; showTel(); t0 = 0; say('', ''); done.hidden = true; form.querySelector('.f-body').hidden = false; form.elements.nombre.focus(); });
 })();
 </script>
 </body>
