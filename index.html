@@ -1042,7 +1042,7 @@ header.nav.scrolled .brandsq{align-self:center;margin-top:0;width:74px;height:63
 const EMAIL = 'thetoolboxenglish@gmail.com';
 /* URL del flujo de Power Automate (disparador "When an HTTP request is received").
    Mientras esté vacía, el formulario abre el programa de correo con el mensaje armado. */
-const FORM_ENDPOINT = '';
+const FORM_ENDPOINT = 'https://default28583269d7ee4dbeac92cd14c48eff.19.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/08/workflows/3689cd8c761f47208887c3b97e8caab7/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=j2M2LfnB6itL0BVyFhC3yEtvK2hmPHYIIBt9CeLC-y4';
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = (s, el=document) => el.querySelector(s), $$ = (s, el=document) => [...el.querySelectorAll(s)];
 const mailto = (subject, body='') => `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}${body ? '&body=' + encodeURIComponent(body) : ''}`;
