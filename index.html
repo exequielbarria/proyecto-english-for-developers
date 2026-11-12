@@ -217,9 +217,9 @@ h3{font-size:18px;font-weight:700;letter-spacing:-.01em}
 .bn details p{margin-top:12px}
 
 /* ---------- precio ---------- */
-.price{display:grid;grid-template-columns:1.2fr .8fr;gap:0;border:1px solid var(--line-2);border-radius:16px;overflow:hidden;background:var(--card)}
+.price{display:grid;grid-template-columns:1.15fr .85fr;gap:0;border:1px solid var(--line-2);border-radius:16px;overflow:hidden;background:var(--card)}
 .price-l{padding:44px}
-.price-r{padding:44px 36px;background:#0B0F12;border-left:1px solid var(--line-2);display:flex;flex-direction:column;justify-content:center;text-align:center;position:relative}
+.price-r{padding:44px 32px;background:#0B0F12;border-left:1px solid var(--line-2);display:flex;flex-direction:column;justify-content:center;text-align:center;position:relative}
 .checks{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:12px}
 .checks li{display:flex;gap:12px;font-size:15px;color:var(--white)}
 .checks li::before{content:"✓";color:var(--green);font-weight:700}
@@ -540,7 +540,7 @@ header.nav.scrolled .brandsq{align-self:center;margin-top:0;width:74px;height:63
 .boost + .boost{margin-top:8px}
 
 /* ---------- Inversión: precio + garantía + resultados + bonos en un bloque ---------- */
-.pr-per{list-style:none;padding:0;width:fit-content;margin:6px auto 28px;text-align:left;font:500 18.5px/1.55 var(--ff-h);color:var(--text)}
+.pr-per{list-style:none;padding:0;width:fit-content;margin:6px auto 28px;text-align:left;font:500 20.5px/1.55 var(--ff-h);color:var(--text)}
 .pr-per li{display:flex;align-items:flex-start;gap:11px}
 .pr-per li::before{content:"";flex:none;margin-top:.62em;width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px rgba(0,222,160,.6)}
 .pr-per b{color:var(--white)}
@@ -1089,7 +1089,7 @@ const pio = new IntersectionObserver(es => { inView = es[0].isIntersecting;
 pio.observe(player);
 /* el video arranca a la altura de "TU SEMANA": se mide cuánto ocupa la barra de la terminal sobre la pantalla */
 const semTop = $('.sem-top'), setScr = () => semTop.style.setProperty('--scr-top', Math.round(screen.getBoundingClientRect().top - player.getBoundingClientRect().top) + 'px');
-/* alineaciones: barra del video con la 2.ª línea del título ("hablar mejor.") y pestañas del editor con "Cambia el" (solo escritorio) */
+/* alineaciones: barra del video en el medio de las dos líneas del título y pestañas del editor con "Cambia el" (solo escritorio) */
 const docY = el => { let t = 0; while (el) { const op = el.offsetParent; t += el.offsetTop + (op ? op.clientTop : 0); el = op; } return t; };
 const midY = el => docY(el) + el.offsetHeight / 2;
 const ide = $('.ide'), hStack = $('#h-stack'), ideTab = $('.ide-tab');
@@ -1100,7 +1100,7 @@ const align = () => {
   if (!wide) return;
   const hSem = $('#h-sem'), bt = player.querySelector('.term-bar span');
   const lhSem = parseFloat(getComputedStyle(hSem).lineHeight) || hSem.offsetHeight;
-  player.style.marginTop = Math.max(0, Math.round(docY(hSem) + lhSem * 1.5 - midY(bt))) + 'px';
+  player.style.marginTop = Math.max(0, Math.round(docY(hSem) + lhSem - midY(bt))) + 'px';
   const lh = parseFloat(getComputedStyle(hStack).lineHeight) || hStack.offsetHeight;
   ide.style.marginTop = Math.max(0, Math.round(docY(hStack) + lh / 2 - midY(ideTab))) + 'px';
 };
