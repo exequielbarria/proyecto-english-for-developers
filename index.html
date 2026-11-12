@@ -272,6 +272,30 @@ form.f{background:var(--card);border:1px solid var(--line-2);border-radius:16px;
 .f-msg.err{color:var(--pink)} .f-msg.ok{color:var(--green)}
 .f .btn{width:100%;justify-content:center}
 .f small{color:var(--dim);font-size:12px}
+.f-body{display:grid;gap:16px}
+.chips{border:0;margin:0;padding:0;min-width:0}
+.chips legend{padding:0;margin-bottom:10px;font:600 12px/1.45 var(--ff-h);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.chips legend span{text-transform:none;letter-spacing:0;font-weight:400;color:var(--dim)}
+.chip-row{display:flex;flex-wrap:wrap;gap:10px}
+.gchip{position:relative;cursor:pointer}
+.gchip input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.gchip span{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border:1px solid var(--line-2);border-radius:999px;background:#0B0F12;font:600 13px/1 var(--ff-h);color:var(--text);transition:border-color .2s,color .2s,background .2s}
+.gchip span::before{content:"";width:14px;height:14px;border-radius:4px;border:1.5px solid var(--line-2);transition:background .2s,border-color .2s}
+.gchip:hover span{border-color:var(--muted)}
+.gchip input:checked + span{border-color:var(--green);color:var(--green);background:rgba(0,222,160,.08)}
+.gchip input:checked + span::before{border-color:var(--green);background:var(--green) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230B0F12' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/11px no-repeat}
+.gchip input:focus-visible + span{box-shadow:0 0 0 3px rgba(0,222,160,.25)}
+.chips[aria-invalid="true"] .gchip span{border-color:var(--pink)}
+.hp{position:absolute!important;left:-9999px;width:1px;height:1px;overflow:hidden}
+.f .btn[aria-busy="true"]{opacity:.7;cursor:progress}
+.f-msg a{color:var(--green)}
+.f-done{display:grid;justify-items:center;text-align:center;gap:12px;padding:26px 6px}
+.f-done[hidden],.f-body[hidden]{display:none}
+.f-done:focus{outline:none}
+.f-ok{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;color:#0B0F12;background:var(--green);box-shadow:0 0 0 8px rgba(0,222,160,.12),0 0 30px rgba(0,222,160,.35)}
+.f-done h3{font-size:22px;margin:4px 0 0}
+.f-done p{margin:0;color:var(--muted);max-width:380px}
+.f-done .btn{width:auto;margin-top:6px}
 
 /* ---------- footer ---------- */
 footer{border-top:1px solid var(--line);background:var(--bg-2);padding:56px 0 30px}
@@ -881,7 +905,7 @@ header.nav.scrolled .brandsq{align-self:center;margin-top:0;width:74px;height:63
         <span class="pr-lab">Inversión total</span>
         <div class="pr-val">USD 999</div>
         <ul class="pr-per"><li><span><b>USD 57</b> por semana</span></li><li><span><b>USD 11,50</b> por día de práctica</span></li></ul>
-        <a class="btn btn-g" data-mail="inscripcion" href="#contacto">Quiero inscribirme <span class="arr">→</span></a>
+        <a class="btn btn-g" data-origen="inscripcion" href="#contacto">Quiero inscribirme <span class="arr">→</span></a>
         <p class="alt">¿Dudas sobre formas de pago? <a class="btn btn-p btn-xs" data-mail="pago" href="#contacto">Escribinos <span class="arr">→</span></a></p>
       </div>
     </div>
@@ -951,7 +975,7 @@ header.nav.scrolled .brandsq{align-self:center;margin-top:0;width:74px;height:63
     <div>
       <p class="eyebrow rv">Contacto</p>
       <h2 id="h-con" class="rv d1">Your skills are ready.<br><span class="g">Is your English?</span></h2>
-      <p class="lead rv d2">Contanos en qué situación estás y te respondemos por email con los próximos pasos.</p>
+      <p class="lead rv d2">Dejanos tus datos y te contactamos por email o WhatsApp con los próximos pasos.</p>
       <ul class="rv d3"><li>Sin compromiso</li><li>Te contamos fechas de inicio y formas de pago</li><li>Resolvemos tus dudas antes de inscribirte</li></ul>
       <div class="links rv d3" aria-label="Otras formas de contacto">
         <a class="lk lk-wa" style="--i:0" href="https://wa.me/5493516851849?text=Hola%2C%20quiero%20info%20sobre%20English%20Sprint%20for%20Devs" target="_blank" rel="noopener"><span class="lk-ico"><svg class="ic fill" aria-hidden="true"><use href="#ic-wa"/></svg></span><span class="lk-txt"><b>WhatsApp</b><small>+54 9 3516 85-1849</small></span><span class="lk-arr" aria-hidden="true">→</span></a>
@@ -961,18 +985,34 @@ header.nav.scrolled .brandsq{align-self:center;margin-top:0;width:74px;height:63
       </div>
     </div>
     <form class="f rv d2" id="form" novalidate>
-      <div class="row2">
-        <div class="fld"><label for="f-name">Nombre</label><input id="f-name" name="name" autocomplete="name" required></div>
-        <div class="fld"><label for="f-mail">Email</label><input id="f-mail" name="email" type="email" autocomplete="email" required></div>
+      <div class="f-body">
+        <div class="row2">
+          <div class="fld"><label for="f-name">Nombre</label><input id="f-name" name="nombre" autocomplete="name" maxlength="80" required></div>
+          <div class="fld"><label for="f-mail">Email</label><input id="f-mail" name="email" type="email" autocomplete="email" maxlength="120" required></div>
+        </div>
+        <div class="row2">
+          <div class="fld"><label for="f-tel">Celular</label><input id="f-tel" name="celular" type="tel" inputmode="tel" autocomplete="tel" maxlength="30" placeholder="+54 9 351 123-4567" required></div>
+          <div class="fld"><label for="f-role">Rol o stack</label><input id="f-role" name="rolStack" maxlength="80" placeholder="Ej.: Backend · Java" required></div>
+        </div>
+        <fieldset class="chips" id="f-goal">
+          <legend>¿Para qué lo necesitás? <span>(podés elegir varias)</span></legend>
+          <div class="chip-row">
+            <label class="gchip"><input type="checkbox" name="objetivo" value="Entrevistas"><span>Entrevistas</span></label>
+            <label class="gchip"><input type="checkbox" name="objetivo" value="Dailies"><span>Dailies</span></label>
+            <label class="gchip"><input type="checkbox" name="objetivo" value="Reuniones"><span>Reuniones</span></label>
+          </div>
+        </fieldset>
+        <div class="hp" aria-hidden="true"><label for="f-web">No completar este campo</label><input id="f-web" name="website" tabindex="-1" autocomplete="off"></div>
+        <button class="btn btn-g" type="submit" id="f-send">Enviar consulta <span class="arr">→</span></button>
+        <div class="f-msg" id="f-out" role="status" aria-live="polite"></div>
+        <small id="f-note">Usamos tus datos solo para contactarte sobre English Sprint.</small>
       </div>
-      <div class="row2">
-        <div class="fld"><label for="f-role">Rol</label><select id="f-role" name="role"><option>Developer</option><option>Data / BI Analyst</option><option>QA / Testing</option><option>DevOps / Cloud</option><option>Otro</option></select></div>
-        <div class="fld"><label for="f-sit">Situación</label><select id="f-sit" name="sit"><option>Busco trabajo con inglés</option><option>Ya trabajo en un equipo en inglés</option><option>Quiero cambiar de trabajo</option><option>Otra</option></select></div>
+      <div class="f-done" id="f-done" tabindex="-1" hidden>
+        <span class="f-ok" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+        <h3 id="f-done-t">¡Gracias!</h3>
+        <p>Recibimos tus datos. Te contactamos pronto por email o WhatsApp con fechas de inicio, formas de pago y los próximos pasos.</p>
+        <button class="btn btn-o btn-sm" type="button" id="f-again">Enviar otra consulta</button>
       </div>
-      <div class="fld"><label for="f-msg">¿Qué te cuesta más hoy en inglés?</label><textarea id="f-msg" name="msg" placeholder="Ej.: las entrevistas técnicas, las dailies, entender acentos…"></textarea></div>
-      <button class="btn btn-g" type="submit">Enviar consulta <span class="arr">→</span></button>
-      <div class="f-msg" id="f-out" role="status" aria-live="polite"></div>
-      <small>Se abre tu programa de correo con el mensaje listo para enviar.</small>
     </form>
   </div>
 </section>
@@ -998,8 +1038,11 @@ header.nav.scrolled .brandsq{align-self:center;margin-top:0;width:74px;height:63
 <script>
 (function(){
 'use strict';
-/* ===== CONFIGURACIÓN: reemplazá este email por el real ===== */
+/* ===== CONFIGURACIÓN ===== */
 const EMAIL = 'thetoolboxenglish@gmail.com';
+/* URL del flujo de Power Automate (disparador "When an HTTP request is received").
+   Mientras esté vacía, el formulario abre el programa de correo con el mensaje armado. */
+const FORM_ENDPOINT = '';
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = (s, el=document) => el.querySelector(s), $$ = (s, el=document) => [...el.querySelectorAll(s)];
 const mailto = (subject, body='') => `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}${body ? '&body=' + encodeURIComponent(body) : ''}`;
@@ -1140,16 +1183,44 @@ const days = $$('.day'), dText = $('#day-text');
 const pick = i => { days.forEach((d, k) => d.setAttribute('aria-pressed', String(k === i))); dText.innerHTML = `<span class="g">// ${DAYS[i][0]}</span><br>${DAYS[i][1]}`; };
 days.forEach((d, i) => d.addEventListener('click', () => pick(i))); pick(0);
 
-/* formulario → email */
-$('#form').addEventListener('submit', e => { e.preventDefault(); const f = e.target, out = $('#f-out');
-  const name = f.name.value.trim(), mail = f.email.value.trim();
-  [f.name, f.email].forEach(x => x.removeAttribute('aria-invalid'));
-  if (!name) { f.name.setAttribute('aria-invalid', 'true'); f.name.focus(); out.className = 'f-msg err'; out.textContent = 'Completá tu nombre.'; return; }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) { f.email.setAttribute('aria-invalid', 'true'); f.email.focus(); out.className = 'f-msg err'; out.textContent = 'Revisá el email.'; return; }
-  const body = `Nombre: ${name}\nEmail: ${mail}\nRol: ${f.role.value}\nSituación: ${f.sit.value}\n\n¿Qué me cuesta más hoy en inglés?\n${f.msg.value.trim() || '-'}`;
-  const href = mailto(`English Sprint for Devs · Consulta de ${name}`, body);
-  window.__lastMailto = href; out.className = 'f-msg ok'; out.textContent = '¡Listo! Abrimos tu correo con el mensaje armado.';
-  location.href = href; });
+/* formulario → Power Automate (o correo, si todavía no hay URL del flujo) */
+const form = $('#form'), out = $('#f-out'), send = $('#f-send'), goal = $('#f-goal'), done = $('#f-done');
+const WA = 'https://wa.me/5493516851849?text=' + encodeURIComponent('Hola, quiero info sobre English Sprint for Devs');
+let origen = 'directo', t0 = 0;
+document.addEventListener('click', e => { const a = e.target.closest('a[href="#contacto"]'); if (a) origen = a.dataset.origen || a.dataset.mail || a.textContent.replace(/[→↗]/g, '').trim().slice(0, 40) || 'directo'; });
+form.addEventListener('focusin', () => { if (!t0) t0 = Date.now(); });
+if (!FORM_ENDPOINT) $('#f-note').textContent = 'Se abre tu programa de correo con el mensaje listo para enviar.';
+const say = (cls, html) => { out.className = 'f-msg ' + cls; out.innerHTML = html; };
+const bad = (el, msg) => { el.setAttribute('aria-invalid', 'true'); (el.matches('fieldset') ? el.querySelector('input') : el).focus(); say('err', msg); return false; };
+const busy = on => { send.disabled = on; send.setAttribute('aria-busy', String(on)); send.firstChild.textContent = on ? 'Enviando… ' : 'Enviar consulta '; };
+form.addEventListener('change', e => { if (e.target.name === 'objetivo') goal.removeAttribute('aria-invalid'); });
+form.addEventListener('submit', async e => { e.preventDefault(); const f = form.elements;
+  [f.nombre, f.email, f.celular, f.rolStack, goal].forEach(x => x.removeAttribute('aria-invalid'));
+  const data = { tipo: 'consulta', nombre: f.nombre.value.trim(), email: f.email.value.trim(), celular: f.celular.value.trim(), rolStack: f.rolStack.value.trim(),
+    objetivo: $$('input[name="objetivo"]:checked', form).map(x => x.value).join(', ') };
+  if (!data.nombre) return bad(f.nombre, 'Completá tu nombre.');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return bad(f.email, 'Revisá el email.');
+  if (data.celular.replace(/\D/g, '').length < 8) return bad(f.celular, 'Revisá el número de celular (con código de área).');
+  if (!data.rolStack) return bad(f.rolStack, 'Contanos tu rol o stack.');
+  if (!data.objetivo) return bad(goal, 'Elegí al menos un objetivo.');
+  const payload = { ...data, origen, pagina: location.href.split('#')[0], website: f.website.value, ms: t0 ? Date.now() - t0 : 0 };
+  if (!FORM_ENDPOINT) { /* respaldo: correo armado */
+    const body = `Nombre: ${data.nombre}\nEmail: ${data.email}\nCelular: ${data.celular}\nRol o stack: ${data.rolStack}\nObjetivo: ${data.objetivo}`;
+    const href = mailto(`English Sprint for Devs · Consulta de ${data.nombre}`, body);
+    window.__lastMailto = href; say('ok', '¡Listo! Abrimos tu correo con el mensaje armado.'); location.href = href; return; }
+  if (payload.website) return finish(data.nombre); /* campo trampa completado: no se envía */
+  busy(true); say('', '');
+  const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 30000);
+  try {
+    const r = await fetch(FORM_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=UTF-8' }, body: JSON.stringify(payload), signal: ctl.signal });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    finish(data.nombre);
+  } catch (err) {
+    say('err', `No pudimos enviar tu consulta. Probá de nuevo en unos minutos o <a href="${WA}" target="_blank" rel="noopener">escribinos por WhatsApp</a>.`);
+  } finally { clearTimeout(timer); busy(false); }
+});
+const finish = nombre => { $('#f-done-t').textContent = `¡Gracias, ${nombre.split(' ')[0]}!`; form.querySelector('.f-body').hidden = true; done.hidden = false; done.focus(); };
+$('#f-again').addEventListener('click', () => { form.reset(); t0 = 0; say('', ''); done.hidden = true; form.querySelector('.f-body').hidden = false; form.elements.nombre.focus(); });
 })();
 </script>
 </body>
